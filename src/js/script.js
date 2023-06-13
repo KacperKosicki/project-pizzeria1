@@ -244,6 +244,7 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
 
     }
@@ -297,7 +298,11 @@
       }
       // update calculated price in the HTML
       price *= thisProduct.amountWidget.value;
-      thisProduct.priceElem.innerHTML = price;
+      //thisProduct.priceSingle = thisProduct.priceElem.value;
+      //thisProduct.priceElem.innerHTML = price;
+
+      thisProduct.priceSingle = price / thisProduct.amountWidget.value; // Obliczamy cenę pojedynczego produktu
+      thisProduct.priceElem.innerHTML = price;//.toFixed(2); // Aktualizujemy wyświetlaną cenę
     }
 
     initAmountWidget() {
@@ -310,6 +315,56 @@
       });
 
     }
+
+    addToCart() {
+      const thisProduct = this;
+      const productSummary = thisProduct.prepareCartProduct();
+
+      app.cart.add(productSummary);
+    }
+
+    prepareCartProduct() {
+
+      const thisProduct = this;
+      const productSummary = {
+        id: thisProduct.id,
+        name: thisProduct.data.name,
+        amount: thisProduct.amountWidget.value,
+        priceSingle: thisProduct.priceSingle,
+        price: thisProduct.priceSingle * thisProduct.amountWidget.value,
+        params: thisProduct.prepareCartProductParams(),
+      };
+
+      return productSummary;
+  
+    }
+
+    prepareCartProductParams() {
+      const thisProduct = this;
+  
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      const params = {};
+  
+      for (let paramId in thisProduct.data.params) {
+        const param = thisProduct.data.params[paramId];
+        params[paramId] = {
+          label: param.label,
+          options: {}
+        };
+  
+        for (let optionId in param.options) {
+          const option = param.options[optionId];
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+  
+          if (optionSelected) {
+            params[paramId].options[optionId] = option.label;
+          }
+        }
+      }
+  
+      return params;
+    }
+
   }
 
   class Cart {
@@ -331,6 +386,7 @@
       thisCart.dom.wrapper = element;
       //thisCart.dom.wrapper = cartElem;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
 
     }
 
@@ -340,6 +396,16 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function(){
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+
+    add(menuProduct) {
+      const thisCart = this;
+
+      const generatedHTML = templates.cartProduct(menuProduct); // Generowanie kodu HTML za pomocą szablonu
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML); // Zamiana kodu HTML na element DOM
+      thisCart.dom.productList.appendChild(generatedDOM); // Dodanie elementu DOM do listy produktów w koszyku
+
+      console.log('adding product:', menuProduct);
     }
 
   }
