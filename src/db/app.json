@@ -255,5 +255,24 @@
         "starters": ["lemonWater"]
       }
     ],
-    "bookings": []
+    "bookings": [
+      {
+         "id": 1,
+         "date": "2021-01-01",
+         "hour": "16:00",
+         "table": 1,
+         "duration": 2,
+         "ppl": 3,
+         "starters": ["bread"]
+      },
+      {
+         "id": 2,
+         "date": "2021-01-01",
+         "hour": "16:00",
+         "table": 2,
+         "duration": 2,
+         "ppl": 3,
+         "starters": ["bread"]
+      }
+    ]
 }
