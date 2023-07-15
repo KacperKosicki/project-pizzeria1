@@ -11,6 +11,7 @@ class Booking {
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+    this.selectedTable = null;
   }
 
   getData() {
@@ -149,6 +150,20 @@ class Booking {
         }
       }
     }
+
+    if (
+      thisBooking.date !== thisBooking.datePicker.value ||
+      thisBooking.hour !== utils.hourToNumber(thisBooking.hourPicker.value) ||
+      thisBooking.people !== thisBooking.peopleAmountWidget.value ||
+      thisBooking.hours !== thisBooking.hoursAmountWidget.value
+    ) {
+      thisBooking.selectedTable = null;
+      const selectedTables = thisBooking.dom.wrapper.querySelectorAll('.selected');
+      selectedTables.forEach((table) => {
+        table.classList.remove('selected');
+      });
+    }
+
   }
 
   render(element) {
@@ -169,6 +184,9 @@ class Booking {
     thisBooking.dom.hourPickerWrapper = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
 
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.widgets.booking.tables);
+
+    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.widgets.booking.tables);
+    thisBooking.initTables();
   }
 
   initWidgets() {
@@ -183,6 +201,51 @@ class Booking {
     thisBooking.dom.wrapper.addEventListener('updated', function() {
       thisBooking.updateDOM();
     })
+
+    thisBooking.dom.wrapper.addEventListener('click', function (event) {
+      if (event.target.matches(select.widgets.booking.tables)) {
+        thisBooking.handleTableClick(event.target);
+      }
+    });
+  }
+
+  handleTableClick(table) {
+    const thisBooking = this;
+  
+    if (!table.classList.contains(classNames.booking.tableBooked)) {
+      if (table === thisBooking.selectedTable) {
+        table.classList.remove('selected');
+        thisBooking.selectedTable = null;
+      } else {
+        if (thisBooking.selectedTable) {
+          thisBooking.selectedTable.classList.remove('selected');
+        }
+        table.classList.add('selected');
+        thisBooking.selectedTable = table;
+      }
+    }
+  }
+  
+  initTables() {
+    const thisBooking = this;
+  
+    thisBooking.dom.wrapper.addEventListener('click', function(event) {
+      const clickedElement = event.target;
+
+      if (clickedElement.classList.contains(classNames.booking.table) && !clickedElement.classList.contains(classNames.booking.tableBooked)) {
+        const tableNumber = clickedElement.getAttribute(settings.booking.tableIdAttribute);
+  
+        if (thisBooking.selectedTable === tableNumber) {
+          thisBooking.selectedTable = null;
+          clickedElement.classList.remove(classNames.booking.tableSelected);
+        } else {
+          thisBooking.selectedTable = tableNumber;
+          clickedElement.classList.add(classNames.booking.tableSelected);
+        }
+      } else if (clickedElement.classList.contains(classNames.booking.tableBooked)) {
+        alert('Ten stolik jest zajęty! Wybierz inny stolik.');
+      }
+    });
   }
 }
 
