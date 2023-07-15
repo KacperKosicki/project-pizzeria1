@@ -43,10 +43,6 @@ class Booking {
       eventsRepeat:   settings.db.url + '/' + settings.db.events    + '?' + params.eventsRepeat.join('&'),
     };
 
-    ////console.log('getData urls', urls);
-    ////console.log('bookings', settings.db.bookings);
-    ////console.log('eventsRepeat', settings.db.eventsRepeat);
-
     Promise.all([
       fetch(urls.bookings),
       fetch(urls.eventsCurrent),
@@ -63,13 +59,10 @@ class Booking {
         ]);
       })
       .then(function([bookings, eventsCurrent, eventsRepeat]) {
-        ////console.log(bookings);
-        ////console.log(eventsCurrent);
-        ////console.log(eventsRepeat);
         thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
       })
       .catch(function(error) {
-        //console.log('Wystąpił błąd:', error);
+        console.log('Wystąpił błąd:', error);
       });
   }
 
@@ -96,11 +89,6 @@ class Booking {
         }
       } 
     }
-    //console.log('bookings:', bookings);
-    //console.log('eventsCurrent:', eventsCurrent);
-    //console.log('eventsRepeat:', eventsRepeat);
-    //console.log('thisBooking.booked:', thisBooking.booked);
-
     thisBooking.updateDOM();
   }
 
@@ -120,7 +108,6 @@ class Booking {
     thisBooking.booked[date][startHour].push(table);
   
     for (let hourBlock = startHour; hourBlock < startHour + duration; hourBlock += 0.5) {
-      console.log('Loop:', hourBlock);
   
       if (typeof thisBooking.booked[date][hourBlock] === 'undefined') {
         thisBooking.booked[date][hourBlock] = [];
@@ -139,20 +126,23 @@ class Booking {
     let allAvailable = false;
   
     if (
-      typeof thisBooking.booked[thisBooking.date] === 'undefined' ||
+      typeof thisBooking.booked[thisBooking.date] === 'undefined'
+      ||
       typeof thisBooking.booked[thisBooking.date][thisBooking.hour] === 'undefined'
     ) {
       allAvailable = true;
     }
+
+    console.log(thisBooking.booked[thisBooking.date]);
   
     for (let table of thisBooking.dom.tables) {
-      const tableId = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
+      let tableId = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
   
       if (!isNaN(tableId)) {
-        console.log('Table ID:', tableId);
-        console.log('Booked tables:', thisBooking.booked[thisBooking.date][thisBooking.hour]);
-  
-        if (!allAvailable && thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)) {
+        if (
+          !allAvailable
+          && thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)
+          ){
           table.classList.add(classNames.booking.tableBooked);
         } else {
           table.classList.remove(classNames.booking.tableBooked);

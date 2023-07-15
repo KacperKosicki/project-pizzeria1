@@ -114,6 +114,7 @@ export const settings = {
   hours: {
     open: 12,
     close: 24,
+    step: 0.5,
   },
   datePicker: {
     maxDaysInFuture: 14,
