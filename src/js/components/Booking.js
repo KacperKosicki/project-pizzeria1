@@ -261,7 +261,7 @@ class Booking {
   
     const payload = {
       date: thisBooking.datePicker.value,
-      hour: utils.numberToHour(thisBooking.hourPicker.value),
+      hour: thisBooking.hourPicker.dom.input.value,
       table: thisBooking.selectedTable ? parseInt(thisBooking.selectedTable.getAttribute(settings.booking.tableIdAttribute)) : null,
       duration: thisBooking.hoursAmountWidget.value,
       ppl: thisBooking.peopleAmountWidget.value,

@@ -2,6 +2,7 @@ import {settings, select, classNames} from './settings.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
 import Booking from './components/Booking.js';
+import Home from './components/Home.js';
 
 export const app = {
   initPages: function() {
@@ -21,18 +22,16 @@ export const app = {
       }
     }
     
-    thisApp.activatePage(/*thisApp.pages[0].id*/pageMatchingHash);
+    thisApp.activatePage(pageMatchingHash);
 
     for(let link of thisApp.navLinks) {
       link.addEventListener('click', function(event) {
         const clickedElement = this;
         event.preventDefault();
 
-        /* get page id from href attribute */
         const id = clickedElement.getAttribute('href').replace('#', '');
-        /* run thisApp.activatePage with that id */
+
         thisApp.activatePage(id);
-        /* change URL hash */
         window.location.hash = '#/' + id;
       });
     }
@@ -41,16 +40,10 @@ export const app = {
   activatePage: function(pageId) {
     const thisApp = this;
 
-    /* add class "active" to matching pages, remove from non-matching */
     for(let page of thisApp.pages){
-    //  if(page.id == pageId){
-    //    page.classList.add(classNames.pages.active);
-    //  } else {
-    //    page.classList.remove(classNames.pages.active);
-    // }
       page.classList.toggle(classNames.pages.active, page.id == pageId);
     }
-    /* add class "active" to matching links, remove from non-matching */
+    
     for(let link of thisApp.navLinks){
       link.classList.toggle(
         classNames.nav.active,
@@ -63,6 +56,12 @@ export const app = {
 
     const bookingElem = document.querySelector(select.containerOf.booking);
     thisApp.booking = new Booking(bookingElem);
+  },
+  initHome: function() {
+    const thisApp = this;
+
+    const homeElem = document.querySelector(select.containerOf.home);
+    thisApp.home = new Home(homeElem);
   },
   initMenu: function(){
     const thisApp = this;
@@ -96,6 +95,7 @@ export const app = {
     thisApp.initCart();
     thisApp.initPages();
     thisApp.initBooking();
+    thisApp.initHome();
   },
   initCart: function(){
     const thisApp = this;
