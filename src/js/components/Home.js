@@ -3,6 +3,7 @@ class Home {
     this.container = document.querySelector('#home .home-wrapper');
     this.render();
     this.initCarousel();
+    this.initGallery();
   }
 
   render() {
@@ -32,22 +33,22 @@ class Home {
         {
           quote: 'Great pizza, amazing service!',
           author: 'John Doe',
-          authorImage: 'images/home/man1.jpg', // Ścieżka do zdjęcia autora
-          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', // Opis autora
+          authorImage: 'images/home/man1.jpg',
+          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
           active: true,
         },
         {
           quote: 'Amazing service!',
           author: 'Jess Erdem',
-          authorImage: 'images/home/man2.jpg', // Ścieżka do zdjęcia autora
-          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', // Opis autora
+          authorImage: 'images/home/man2.jpg',
+          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
           active: true,
         },
         {
           quote: 'Great pizza!',
           author: 'Susanna Stan',
-          authorImage: 'images/home/woman1.jpg', // Ścieżka do zdjęcia autora
-          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', // Opis autora
+          authorImage: 'images/home/woman1.jpg',
+          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
           active: true,
         },
       ],
@@ -107,6 +108,48 @@ class Home {
         item.classList.remove('animate');
       });
     });
+  }
+
+  initGallery() {
+    const galleryItems = this.container.querySelectorAll('.gallery-item');
+
+    galleryItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        this.changeIconColor(item);
+      });
+
+      item.addEventListener('mouseenter', () => {
+        this.showIcons(item);
+      });
+
+      item.addEventListener('mouseleave', () => {
+        this.hideIcons(item);
+      });
+    });
+  }
+
+  showIcons(item) {
+    const icon1 = document.createElement('i');
+    icon1.classList.add('fa', 'fa-heart', 'icon');
+    icon1.addEventListener('click', () => this.changeIconColor(icon1));
+
+    const icon2 = document.createElement('i');
+    icon2.classList.add('fas', 'fa-share', 'icon');
+    icon2.addEventListener('click', () => this.changeIconColor(icon2));
+
+    item.appendChild(icon1);
+    item.appendChild(icon2);
+  }
+
+  hideIcons(item) {
+    const icons = item.querySelectorAll('.icon');
+    icons.forEach((icon) => {
+      item.removeChild(icon);
+    });
+  }
+
+  changeIconColor(icon) {
+    icon.style.color = 'lightcoral';
   }
 }
 
