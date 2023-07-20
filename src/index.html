@@ -65,7 +65,7 @@
 
   <div id="pages">
     <section id="home">
-      <div id="home-wrapper"></div>
+      <div class="home-wrapper container"></div>
     </section>
     <section id="order">
       <div id="product-list" class="product-list container"></div>
@@ -74,6 +74,48 @@
       <div class="booking-wrapper container"></div>
     </section>
   </div>
+
+  <script id="template-home" type="text/x-handlebars-template">
+    <div class="home-wrapper container">
+      <div class="boxes">
+        {{#each boxes}}
+        <div class="box {{class}}" style="background-image: url('{{backgroundImage}}')">
+            <h2>{{title}}</h2>
+            <p>{{description}}</p>
+          </div>
+        {{/each}}
+      </div>
+      <div class="carousel-container">
+        <div class="carousel">
+          {{#each carouselItems}}
+          <div class="carousel-item{{#if active}} active{{else}} carousel-item-hidden{{/if}}">
+            <div class="author-info">
+              <div class="author-image-container">
+                <img class="author-image" src="{{authorImage}}" alt="{{author}}">
+              </div>
+              <div class="author-review">
+                <p class="quote">{{quote}}</p>
+                {{#if authorDescription}}
+                <p class="author-description">{{authorDescription}}</p>
+                <p class="author-name">- {{author}}</p>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+    </div>
+    <div class="gallery-container">
+      <div class="gallery">
+        {{#each galleryItems}}
+        <div class="gallery-item" style="background-image: url('{{this}}')"></div>
+        {{/each}}
+        <div class="view-more">
+          <a href="#" class="view-more-link">View more on instagram</a>
+        </div>
+      </div>
+    </div>
+  </script>
 
   <script id="template-cart-product" type="text/x-handlebars-template">
     <li>
