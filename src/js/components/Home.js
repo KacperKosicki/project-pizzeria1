@@ -4,6 +4,7 @@ class Home {
     this.render();
     this.initCarousel();
     this.initGallery();
+    this.addEventListeners();
   }
 
   render() {
@@ -13,14 +14,14 @@ class Home {
           class: 'order-box',
           title: 'Order Online',
           description: 'Place an online order and enjoy our delicious pizzas!',
-          backgroundImage: 'images/home/pizza-background.jpg',
+          backgroundImage: 'images/home/pizza-1.jpg',
           showOrderOnlineLabel: true
         },
         {
           class: 'booking-box',
           title: 'Book a Table',
           description: 'Reserve a table and have a great dining experience!',
-          backgroundImage: 'images/home/booking-background.jpg'
+          backgroundImage: 'images/home/pizza-2.jpg'
         },
         {
           class: 'opening-box',
@@ -34,21 +35,21 @@ class Home {
           quote: 'Great pizza, amazing service!',
           author: 'John Doe',
           authorImage: 'images/home/man1.jpg',
-          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quisque id diam vel quam elementum pulvinar etiam non.',
           active: true,
         },
         {
           quote: 'Amazing service!',
           author: 'Jess Erdem',
           authorImage: 'images/home/man2.jpg',
-          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quisque id diam vel quam elementum pulvinar etiam non.',
           active: true,
         },
         {
           quote: 'Great pizza!',
           author: 'Susanna Stan',
           authorImage: 'images/home/woman1.jpg',
-          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          authorDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quisque id diam vel quam elementum pulvinar etiam non.',
           active: true,
         },
       ],
@@ -58,7 +59,7 @@ class Home {
         'images/home/restaurant3.jpg',
         'images/home/restaurant4.jpg',
         'images/home/restaurant5.jpg',
-        'images/home/restaurant6.jpg',
+        'images/home/pizza-4.jpg',
       ],
     };
 
@@ -87,19 +88,32 @@ class Home {
   }
 
   addEventListeners() {
-    const orderBox = document.querySelector('.order-box');
-    const bookingBox = document.querySelector('.booking-box');
+    const orderBox = this.container.querySelector('.order-box');
+    const bookingBox = this.container.querySelector('.booking-box');
 
     orderBox.addEventListener('click', () => {
-      window.location.href = 'order.html';
+      window.location.href = '#/order';
     });
 
     bookingBox.addEventListener('click', () => {
-      window.location.href = 'booking.html';
+      window.location.href = '#/booking';
     });
 
-    const galleryItems = document.querySelectorAll('.gallery-item');
+    const galleryItems = this.container.querySelectorAll('.gallery-item');
+
     galleryItems.forEach((item) => {
+      const iconContainer = document.createElement('div');
+      iconContainer.classList.add('icon-container');
+      item.appendChild(iconContainer);
+
+      const icon1 = document.createElement('i');
+      icon1.classList.add('fas', 'fa-heart', 'icon');
+      iconContainer.appendChild(icon1);
+
+      const icon2 = document.createElement('i');
+      icon2.classList.add('fas', 'fa-share', 'icon');
+      iconContainer.appendChild(icon2);
+
       item.addEventListener('mouseenter', () => {
         item.classList.add('animate');
       });
@@ -109,7 +123,7 @@ class Home {
       });
     });
   }
-
+  
   initGallery() {
     const galleryItems = this.container.querySelectorAll('.gallery-item');
 
@@ -128,29 +142,25 @@ class Home {
     });
   }
 
-  showIcons(item) {
-    const icon1 = document.createElement('i');
-    icon1.classList.add('fa', 'fa-heart', 'icon');
-    icon1.addEventListener('click', () => this.changeIconColor(icon1));
-
-    const icon2 = document.createElement('i');
-    icon2.classList.add('fas', 'fa-share', 'icon');
-    icon2.addEventListener('click', () => this.changeIconColor(icon2));
-
-    item.appendChild(icon1);
-    item.appendChild(icon2);
-  }
-
-  hideIcons(item) {
+  changeIconColor(item) {
     const icons = item.querySelectorAll('.icon');
     icons.forEach((icon) => {
-      item.removeChild(icon);
+      icon.style.color = '#ff0000'; // Kolor czerwony
     });
   }
 
-  changeIconColor(icon) {
-    icon.style.color = 'lightcoral';
+  // Funkcja pokazująca ikony na zdjęciu w galerii
+  showIcons(item) {
+    const iconContainer = item.querySelector('.icon-container');
+    iconContainer.style.opacity = '1';
   }
+
+  // Funkcja ukrywająca ikony na zdjęciu w galerii
+  hideIcons(item) {
+    const iconContainer = item.querySelector('.icon-container');
+    iconContainer.style.opacity = '0';
+  }
+
 }
 
 export default Home;
