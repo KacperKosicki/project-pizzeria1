@@ -12,14 +12,14 @@ class Home {
       boxes: [
         {
           class: 'order-box',
-          title: 'Order Online',
+          title: 'ORDER ONLINE',
           description: 'Place an online order and enjoy our delicious pizzas!',
           backgroundImage: 'images/home/pizza-1.jpg',
           showOrderOnlineLabel: true
         },
         {
           class: 'booking-box',
-          title: 'Book a Table',
+          title: 'BOOK A TABLE',
           description: 'Reserve a table and have a great dining experience!',
           backgroundImage: 'images/home/pizza-2.jpg'
         },
@@ -27,7 +27,6 @@ class Home {
           class: 'opening-box',
           title: 'OPENING HOURS',
           description: 'TUE-SUN, 12PM - 12AM',
-          backgroundImage: '-'
         }
       ],
       carouselItems: [
@@ -54,12 +53,12 @@ class Home {
         },
       ],
       galleryItems: [
-        'images/home/restaurant1.jpg',
-        'images/home/restaurant2.jpg',
-        'images/home/restaurant3.jpg',
-        'images/home/restaurant4.jpg',
-        'images/home/restaurant5.jpg',
         'images/home/pizza-4.jpg',
+        'images/home/pizza-5.jpg',
+        'images/home/pizza-6.jpg',
+        'images/home/pizza-7.jpg',
+        'images/home/pizza-8.jpg',
+        'images/home/pizza-9.jpg',
       ],
     };
 
@@ -78,7 +77,7 @@ class Home {
       wrapAround: true,
       prevNextButtons: false,
     });
-  
+
     flkty.on('select', () => {
       const allSlides = carouselElement.querySelectorAll('.carousel-item');
       allSlides.forEach((slide, index) => {
@@ -102,28 +101,33 @@ class Home {
     const galleryItems = this.container.querySelectorAll('.gallery-item');
 
     galleryItems.forEach((item) => {
-      const iconContainer = document.createElement('div');
-      iconContainer.classList.add('icon-container');
-      item.appendChild(iconContainer);
-
-      const icon1 = document.createElement('i');
-      icon1.classList.add('fas', 'fa-heart', 'icon');
-      iconContainer.appendChild(icon1);
-
-      const icon2 = document.createElement('i');
-      icon2.classList.add('fas', 'fa-share', 'icon');
-      iconContainer.appendChild(icon2);
+      item.addEventListener('click', () => {
+        this.changeIconColor(item);
+      });
 
       item.addEventListener('mouseenter', () => {
-        item.classList.add('animate');
+        this.showIcons(item);
       });
 
       item.addEventListener('mouseleave', () => {
-        item.classList.remove('animate');
+        this.hideIcons(item);
+      });
+
+      const iconContainer = item.querySelector('.icon-container');
+      const icons = iconContainer.querySelectorAll('.icon');
+
+      icons.forEach((icon) => {
+        icon.addEventListener('mouseenter', () => {
+          this.changeIconColorOnHover(icon);
+        });
+
+        icon.addEventListener('mouseleave', () => {
+          this.resetIconColor(icon);
+        });
       });
     });
   }
-  
+
   initGallery() {
     const galleryItems = this.container.querySelectorAll('.gallery-item');
 
@@ -139,28 +143,45 @@ class Home {
       item.addEventListener('mouseleave', () => {
         this.hideIcons(item);
       });
+
+      const iconContainer = item.querySelector('.icon-container');
+      const icons = iconContainer.querySelectorAll('.icon');
+
+      icons.forEach((icon) => {
+        icon.addEventListener('mouseenter', () => {
+          this.changeIconColorOnHover(icon);
+        });
+
+        icon.addEventListener('mouseleave', () => {
+          this.resetIconColor(icon);
+        });
+      });
     });
   }
 
-  changeIconColor(item) {
-    const icons = item.querySelectorAll('.icon');
-    icons.forEach((icon) => {
-      icon.style.color = '#ff0000'; // Kolor czerwony
-    });
-  }
-
-  // Funkcja pokazująca ikony na zdjęciu w galerii
   showIcons(item) {
     const iconContainer = item.querySelector('.icon-container');
-    iconContainer.style.opacity = '1';
+    const icons = iconContainer.querySelectorAll('.icon');
+    icons.forEach((icon) => {
+      icon.style.color = '#ffffff';
+    });
   }
 
-  // Funkcja ukrywająca ikony na zdjęciu w galerii
   hideIcons(item) {
     const iconContainer = item.querySelector('.icon-container');
-    iconContainer.style.opacity = '0';
+    const icons = iconContainer.querySelectorAll('.icon');
+    icons.forEach((icon) => {
+      icon.style.color = '#ffffff';
+    });
   }
 
+  changeIconColorOnHover(icon) {
+    icon.style.color = '#ff6b6b';
+  }
+
+  resetIconColor(icon) {
+    icon.style.color = '#ffffff';
+  }
 }
 
 export default Home;

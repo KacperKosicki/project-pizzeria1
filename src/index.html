@@ -108,7 +108,12 @@
     <div class="gallery-container">
       <div class="gallery">
         {{#each galleryItems}}
-        <div class="gallery-item" style="background-image: url('{{this}}')"></div>
+        <div class="gallery-item" style="background-image: url('{{this}}')">
+          <div class="icon-container">
+            <i class="fas fa-heart icon"></i>
+            <i class="fas fa-share icon"></i>
+          </div>
+        </div>
         {{/each}}
         <div class="view-more">
           <a href="#" class="view-more-link">View more on instagram</a>
